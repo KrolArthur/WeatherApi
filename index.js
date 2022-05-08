@@ -1,6 +1,10 @@
-const express = require('express');
-const mysql = require('mysql');
+import usersRoutes from './routes/users.js';
+import express from 'express';
+import mysql from 'mysql';
+
 const app = express();
+
+app.use('/users', usersRoutes);
 
 var con = mysql.createConnection({
     host: "127.0.0.1",
