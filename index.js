@@ -1,8 +1,17 @@
 import usersRoutes from './routes/users.js';
 import express from 'express';
 import mysql from 'mysql';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+
 
 const app = express();
+app.use(helmet());
+app.use(bodyParser.json());
+app.use(cors());
+app.use(morgan('combined'));
 
 app.use('/users', usersRoutes);
 
