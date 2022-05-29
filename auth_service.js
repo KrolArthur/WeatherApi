@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import morgan from 'morgan';
 import db from './database/db.js'
+import { login } from './queries/authentication/authentication.js'
 
 const app = express();
 app.use(morgan('combined'));
@@ -17,8 +18,7 @@ app.use(bodyParser.json());
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    let sql = "SELECT id, username, isAdmin FROM authentication WHERE username = ? AND password = ?"
-    const user = db.query(sql,
+    const user = db.query(login,
         [ username, password ],
         function (err, result) {
             if (err) throw err;
