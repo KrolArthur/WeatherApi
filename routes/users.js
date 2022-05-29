@@ -1,10 +1,11 @@
 import express from 'express';
+import { authenticateJWT } from '../jwt_handler.js';
 
 import { getUsers, createUser, getUser, deleteUser, updateUser } from '../controllers/users_controller.js';
 
 const router = express.Router();
 
-router.get('/', getUsers);
+router.get('/', authenticateJWT, getUsers);
 
 router.post('/', createUser);
 

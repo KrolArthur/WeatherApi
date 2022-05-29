@@ -1,10 +1,12 @@
-import usersRoutes from './routes/users.js';
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import db from './database/db.js'
+import dotenv from 'dotenv';
+import usersRoutes from './routes/users.js';
+
+dotenv.config();
 
 const app = express();
 app.use(helmet());

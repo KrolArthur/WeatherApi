@@ -4,7 +4,6 @@ export const getUsers = (req, res) => {
     db.query("SELECT id, username, email, password FROM user", 
         function (err, result, fields) {
             if (err) throw err;
-            console.log(result);
             res.send(result);
         }
     );
