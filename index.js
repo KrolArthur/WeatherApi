@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
 import usersRoutes from './routes/users.js';
+import deviceRoutes from './routes/devices.js';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ app.use(cors());
 app.use(morgan('combined'));
 
 app.use('/users', usersRoutes);
+app.use('/devices', deviceRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello World');

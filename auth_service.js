@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import morgan from 'morgan';
 import db from './database/db.js'
-import { login } from './queries/authentication/authentication.js'
+import { login_query } from './queries/authentication/authentication.js'
 
 const app = express();
 app.use(morgan('combined'));
@@ -18,40 +18,40 @@ app.use(bodyParser.json());
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
-    const user = db.query(login,
+    let user = db.query(
+        login_query,
         [ username, password ],
         function (err, result) {
             if (err) throw err;
-            return {
-                username : JSON.stringify(result[0].username),
-                role : JSON.stringify(result[0].isAdmin)
+            if(result != null) {
+                let idResult = JSON.stringify(result[0].id)
+                let usernameResult = JSON.stringify(result[0].username)
+                let roleResult = JSON.stringify(result[0].isAdmin)
+                const accessToken = jwt.sign(
+                    { 
+                        username: usernameResult, 
+                        role: roleResult 
+                    }, 
+                    accessTokenSecret, 
+                    { 
+                        expiresIn: '1m' 
+                    }
+                );
+
+                const refreshToken = jwt.sign({ username: usernameResult, role: roleResult }, refreshTokenSecret);
+        
+                refreshTokens.push(refreshToken);
+                res.json({
+                    id: idResult,
+                    accessToken,
+                    refreshToken
+                });
+        
+            } else {
+                res.send('Username or password incorrect');
             }
         }
     );
-
-    if (user) {
-        const accessToken = jwt.sign(
-            { 
-                username: user.username, 
-                role: user.admin 
-            }, 
-            accessTokenSecret, 
-            { 
-                expiresIn: '1m' 
-            }
-        );
-        const refreshToken = jwt.sign({ username: user.username, role: user.admin }, refreshTokenSecret);
-
-        refreshTokens.push(refreshToken);
-
-        res.json({
-            accessToken,
-            refreshToken
-        });
-
-    } else {
-        res.send('Username or password incorrect');
-    }
 });
 
 app.post('/token', (req, res) => {
@@ -66,13 +66,13 @@ app.post('/token', (req, res) => {
         return res.sendStatus(403);
     }
 
-    jwt.verify(token, refreshTokenSecret, (err, user) => {
+    jwt.verify(token, refreshTokenSecret, (err) => {
         if (err) {
             console.log('verify fail');
             return res.sendStatus(403);
         }
 
-        const accessToken = jwt.sign({ username: user.username, role: user.role }, accessTokenSecret, { expiresIn: '20m' });
+        const accessToken = jwt.sign({ }, accessTokenSecret, { expiresIn: '20m' });
 
         res.json({
             accessToken
