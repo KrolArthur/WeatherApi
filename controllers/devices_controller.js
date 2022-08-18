@@ -1,16 +1,33 @@
 import db from '../database/db.js'
+import { 
+    devices_query,
+    device_by_serial_query
+    } from '../queries/device_queries.js'
 
 export const getDevices = (req, res) => {
-    db.query("SELECT id FROM device", 
-        function (err, result, fields) {
-            if (err) throw err;
-            res.send(result);
+    if (req?.query?.serial) {
+        let serial = req.query.serial;
+        if(serial) {
+            db.query(device_by_serial_query, [ serial ],
+                function (err, result, fields) {
+                    if (err) throw err;
+                    console.log(result)
+                    res.send(result);
+                }
+            );
         }
-    );
+    } else {
+        db.query(devices_query, 
+            function (err, result, fields) {
+                if (err) throw err;
+                res.send(result);
+            }
+        );
+    }
 }   
 
 export const createDevice = (req, res) => {  
-    const user = req.body; 
+    const device = req.body; 
     console.log('User [${user.username}] added to the database.');
 };
 

@@ -7,12 +7,12 @@ const router = express.Router();
 
 router.get('/', authenticateJWT, getUsers);
 
-router.post('/', createUser);
+router.post('/', authenticateJWT, createUser);
 
-router.get('/:id', getUser);
+router.get('/:id', authenticateJWT, getUser);
 
-router.delete('/:id', deleteUser);
+router.delete('/:id', authenticateJWT, deleteUser);
 
-router.patch('/:id', updateUser);
+router.patch('/:id', authenticateJWT, updateUser);
 
 export default router;

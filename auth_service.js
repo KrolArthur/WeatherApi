@@ -3,14 +3,14 @@ import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import morgan from 'morgan';
 import db from './database/db.js'
-import { login_query } from './queries/authentication/authentication.js'
+import { login_query } from './queries/authentication_queries.js'
 
 const app = express();
 app.use(morgan('combined'));
 app.use(bodyParser.json());
-//tokens should be generated with for example Crypto lib
-const accessTokenSecret = 'somerandomaccesstoken';
-const refreshTokenSecret = 'somerandomstringforrefreshtoken';
+
+const accessTokenSecret = 'eb29c5b0-935f-47fc-b2cd-77349876394f';
+const refreshTokenSecret = '02e8ff09-9cd5-4ae1-b62e-3ace8dfc9158';
 
 let refreshTokens = [];
 
@@ -34,7 +34,7 @@ app.post('/login', (req, res) => {
                     }, 
                     accessTokenSecret, 
                     { 
-                        expiresIn: '1m' 
+                        expiresIn: '20m' 
                     }
                 );
 

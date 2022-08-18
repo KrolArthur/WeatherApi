@@ -7,12 +7,12 @@ const router = express.Router();
 
 router.get('/', authenticateJWT, getDevices);
 
-router.post('/', createDevice);
+router.post('/', authenticateJWT, createDevice);
 
-router.get('/:id', getDevice);
+router.get('/:id', authenticateJWT, getDevice);
 
-router.delete('/:id', deleteDevice);
+router.delete('/:id', authenticateJWT, deleteDevice);
 
-router.patch('/:id', updateDevice);
+router.patch('/:id', authenticateJWT, updateDevice);
 
 export default router;

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-const accessTokenSecret = 'somerandomaccesstoken';
+const accessTokenSecret = 'eb29c5b0-935f-47fc-b2cd-77349876394f';
 
 export const authenticateJWT = (req, res, next) => {
     const authHeader = req.headers.authorization;
