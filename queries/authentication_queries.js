@@ -1,0 +1,1 @@
+export const login_query = "SELECT id, username, isAdmin FROM authentication WHERE username = ? AND password = ?";
